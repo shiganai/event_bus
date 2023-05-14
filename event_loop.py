@@ -26,8 +26,9 @@ def main() -> None:
         for each_event in new_events:
             with open(new_event_path + "\\" + each_event,'r',encoding='utf-8') as f:
                 event_data = f.read().splitlines()
-                print("event_data is as follows --------------------")
+                print("received event_data is as follows --------------------")
                 print(event_data)
+                print("------------------------------------------------------")
 
                 # trigger app
                 category = event_data[2]
