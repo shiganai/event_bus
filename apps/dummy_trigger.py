@@ -4,13 +4,13 @@
 import os, sys
 import time, datetime
 from src import get_filename_header
-from src import print_called_function
 from src import get_absolute_path
 from src import get_random_int
-
-print_called_function.main(__file__)
+from src.log_config import logger, log_called_func_str
 
 def main(args: list = sys.argv[1:]) -> None:
+    logger.info(eval(log_called_func_str))
+
     header = get_filename_header.main()
 
     new_event_dir_path = get_absolute_path.main('new_event_dir')
@@ -32,6 +32,7 @@ def main(args: list = sys.argv[1:]) -> None:
         f.write(event_data)
 
 def register_event() -> str:
+    logger.info(eval(log_called_func_str))
     return "None"
 
 if __name__ == "__main__":

@@ -3,12 +3,11 @@
 
 import datetime
 import numpy as np
-from src import print_called_function
+from src.log_config import logger, log_called_func_str
 from src import get_random_int
 
-print_called_function.main(__file__)
-
 def main() -> str:
+    logger.info(eval(log_called_func_str))
     now_datetime = datetime.datetime.now()
     now_str = now_datetime.strftime("%Y_%m_%d_%H_%M_%S_") + str(now_datetime.microsecond)
 
