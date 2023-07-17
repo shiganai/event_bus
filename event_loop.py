@@ -4,8 +4,9 @@ import os
 import numpy as np
 import csv
 import time
+import types
 from src import *
-from src import get_absolute_path
+from src import get_absolute_path, get_filename_header
 from src.log_config import *
 from importlib import import_module
 
@@ -15,6 +16,8 @@ def main() -> None:
     new_event_path = get_absolute_path.main('new_event_dir')
     old_event_path = get_absolute_path.main('old_event_dir')
     
+    apps_name_module_old = [[],[]]
+
     loop_count = 0
     # Main loop
     while True:
@@ -27,6 +30,11 @@ def main() -> None:
         for app in APPS:
             apps_name_module[0].append(app)
             apps_name_module[1].append(import_module("apps."+app))
+        
+        if apps_name_module_old[0] != apps_name_module[0]:
+            write_registered_event(apps_name_module)
+        
+        apps_name_module_old = apps_name_module
 
         # Reload registered event
         registered_pair = read_registered_list()
@@ -42,9 +50,11 @@ def main() -> None:
 
                 # trigger app
                 category = event_data[2]
-                matched_index = np.where(registered_pair[:,1]==category)
+                matched_index = np.where(registered_pair[:,1]==category)[0]
+                print(f"matched_index: {matched_index}")
                 for loop_index in matched_index:
-                    app_name = registered_pair[loop_index,0][0]
+                    print(f"loop_index: {loop_index}")
+                    app_name = registered_pair[loop_index,0]
                     app = apps_name_module[1][apps_name_module[0].index(app_name)]
                     app.main(event_data)
                     print("done")
@@ -85,7 +95,7 @@ def read_registered_list() -> list:
 
     return content
 
-def write_registered_event(APPS) -> None:
+def write_registered_event(apps_name_module: list[list]) -> None:
     logger.info(eval(log_called_func_str))
     
     header = get_filename_header.main()
@@ -95,10 +105,15 @@ def write_registered_event(APPS) -> None:
     filename_to_write = registered_event_path + "\\" + header + ".csv"
 
     with open(filename_to_write, 'w', encoding='utf-8') as f:
-        for app in APPS:
-            registered_event = eval(f"{app}.register_event")()
-            f.write(app + ',' + registered_event)
-            f.write("\n")
+        for ii in range(apps_name_module[0].__len__()):
+            app_name = apps_name_module[0][ii]
+            app_module = apps_name_module[1][ii]
+            names = dir(app_module)
+            functions = [name for name in names if isinstance(getattr(app_module, name), types.FunctionType)]
+            if "register_event" in functions:
+                registered_event = app_module.register_event()
+                f.write(app_name + ',' + registered_event)
+                f.write("\n")
 
 def load_current_app_list() -> list[str]:
     
@@ -111,5 +126,4 @@ def load_current_app_list() -> list[str]:
     return APPS
 
 if __name__ == "__main__":
-    # write_registered_event()
     main()
