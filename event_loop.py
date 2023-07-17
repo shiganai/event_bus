@@ -6,9 +6,11 @@ import csv
 import time
 from src import *
 from apps import *
+from src.log_config import *
 
 def main() -> None:
-    None
+    logger.info(eval(log_called_func_str))
+
     new_event_path = get_absolute_path.main('new_event_dir')
     old_event_path = get_absolute_path.main('old_event_dir')
     
@@ -43,6 +45,7 @@ def main() -> None:
         time.sleep(1)
 
 def read_registered_list() -> list:
+    logger.info(eval(log_called_func_str))
     # Read trigger key for each apps.
 
     # Get filenames
@@ -74,6 +77,8 @@ def read_registered_list() -> list:
     return content
 
 def write_registered_event() -> None:
+    logger.info(eval(log_called_func_str))
+    
     header = get_filename_header.main()
     header = header[:-1] # remove "_"
     

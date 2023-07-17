@@ -22,8 +22,8 @@ def main(target_name: str = None) -> str:
         target_path = os.path.normpath(os.path.join(base_path, 'new_event_dir'))
     elif target_name == 'old_event_dir':
         target_path = os.path.normpath(os.path.join(base_path, 'old_event_dir'))
-    elif target_name == 'is_debugging.txt':
-        target_path = os.path.normpath(os.path.join(base_path, 'is_debugging.txt'))
+    elif target_name == 'log_mode.txt':
+        target_path = os.path.normpath(os.path.join(base_path, 'log_mode.txt'))
     elif target_name == 'registered_event':
         target_path = os.path.normpath(os.path.join(base_path, 'registered_event'))
     else:
