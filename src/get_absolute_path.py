@@ -26,6 +26,8 @@ def main(target_name: str = None) -> str:
         target_path = os.path.normpath(os.path.join(base_path, 'log_mode.txt'))
     elif target_name == 'registered_event':
         target_path = os.path.normpath(os.path.join(base_path, 'registered_event'))
+    elif target_name == 'apps':
+        target_path = os.path.normpath(os.path.join(base_path, 'apps'))
     else:
         raise Exception("target_name: " + target_name + " is not registered")
 
