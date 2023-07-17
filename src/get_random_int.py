@@ -2,7 +2,7 @@
 # Random int is contained so to avoid name header conflict.
 
 import numpy as np
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 
 max_rand = 2**29 # maximal of random number.
 def main(return_max_rand: bool = False) -> int:

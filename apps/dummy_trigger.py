@@ -6,7 +6,7 @@ import time, datetime
 from src import get_filename_header
 from src import get_absolute_path
 from src import get_random_int
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 
 def main(args: list = sys.argv[1:]) -> None:
     logger.info(eval(log_called_func_str))

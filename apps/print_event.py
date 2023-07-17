@@ -1,7 +1,7 @@
 # Print out 4 elements from event logs.
 
 import sys
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 
 def main(args: list = sys.argv[1:]) -> None:
     logger.info(eval(log_called_func_str))

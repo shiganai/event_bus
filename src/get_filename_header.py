@@ -3,7 +3,7 @@
 
 import datetime
 import numpy as np
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 from src import get_random_int
 
 def main() -> str:

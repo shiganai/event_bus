@@ -6,7 +6,7 @@ import csv
 import time
 from src import *
 from apps import *
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 
 def main() -> None:
     logger.info(eval(log_called_func_str))

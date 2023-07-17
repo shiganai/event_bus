@@ -2,7 +2,7 @@
 import sys
 from apps import *
 from src import *
-from src.log_config import logger, log_called_func_str
+from src.log_config import *
 
 PY = '.py'
 
