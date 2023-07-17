@@ -5,8 +5,9 @@ import numpy as np
 import csv
 import time
 from src import *
-from apps import *
+from src import get_absolute_path
 from src.log_config import *
+from importlib import import_module
 
 def main() -> None:
     logger.info(eval(log_called_func_str))
@@ -19,6 +20,13 @@ def main() -> None:
     while True:
         loop_count = loop_count + 1
         print("loop_count:" + str(loop_count))
+
+        APPS = load_current_app_list()
+        print(f'APPS: {APPS}')
+        apps_name_module = [[],[]]
+        for app in APPS:
+            apps_name_module[0].append(app)
+            apps_name_module[1].append(import_module("apps."+app))
 
         # Reload registered event
         registered_pair = read_registered_list()
@@ -36,8 +44,9 @@ def main() -> None:
                 category = event_data[2]
                 matched_index = np.where(registered_pair[:,1]==category)
                 for loop_index in matched_index:
-                    app = registered_pair[loop_index,0][0]
-                    eval(f"{app}.main")(args=event_data)
+                    app_name = registered_pair[loop_index,0][0]
+                    app = apps_name_module[1][apps_name_module[0].index(app_name)]
+                    app.main(event_data)
                     print("done")
                 
             os.rename(new_event_path + "\\" + each_event, old_event_path + "\\" + each_event)
@@ -76,7 +85,7 @@ def read_registered_list() -> list:
 
     return content
 
-def write_registered_event() -> None:
+def write_registered_event(APPS) -> None:
     logger.info(eval(log_called_func_str))
     
     header = get_filename_header.main()
@@ -90,6 +99,16 @@ def write_registered_event() -> None:
             registered_event = eval(f"{app}.register_event")()
             f.write(app + ',' + registered_event)
             f.write("\n")
+
+def load_current_app_list() -> list[str]:
+    
+    FILTER = [
+        "__init__.py"
+    ]
+    APPS_DIR = get_absolute_path.main('apps')
+    PY = '.py'
+    APPS = [file[:-3] for file in os.listdir(APPS_DIR) if file.endswith(PY) and file not in FILTER]
+    return APPS
 
 if __name__ == "__main__":
     # write_registered_event()
